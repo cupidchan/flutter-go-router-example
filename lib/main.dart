@@ -9,7 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  final SharedPreferences sharedPreferences =
+      await SharedPreferences.getInstance();
   runApp(MyApp(sharedPreferences: sharedPreferences));
 }
 
@@ -57,11 +58,11 @@ class _MyAppState extends State<MyApp> {
       ],
       child: Builder(
         builder: (context) {
-          final GoRouter goRouter = Provider.of<AppRouter>(context, listen: false).router;
+          final GoRouter goRouter =
+              Provider.of<AppRouter>(context, listen: false).router;
           return MaterialApp.router(
             title: "Router App",
-            routeInformationParser: goRouter.routeInformationParser,
-            routerDelegate: goRouter.routerDelegate,
+            routerConfig: goRouter,
           );
         },
       ),

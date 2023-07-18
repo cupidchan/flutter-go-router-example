@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_router_example/router/route_utils.dart';
 import 'package:flutter_router_example/services/app_service.dart';
 import 'package:flutter_router_example/views/error_page.dart';
@@ -44,7 +45,7 @@ class AppRouter {
       ),
     ],
     errorBuilder: (context, state) => ErrorPage(error: state.error.toString()),
-    redirect: (state) {
+    redirect: (BuildContext context, GoRouterState state) {
       final loginLocation = state.namedLocation(APP_PAGE.login.toName);
       final homeLocation = state.namedLocation(APP_PAGE.home.toName);
       final splashLocation = state.namedLocation(APP_PAGE.splash.toName);
@@ -54,24 +55,29 @@ class AppRouter {
       final isInitialized = appService.initialized;
       final isOnboarded = appService.onboarding;
 
-      final isGoingToLogin = state.subloc == loginLocation;
-      final isGoingToInit = state.subloc == splashLocation;
-      final isGoingToOnboard = state.subloc == onboardLocation;
+      final isGoingToLogin = state.matchedLocation == loginLocation;
+      final isGoingToInit = state.matchedLocation == splashLocation;
+      final isGoingToOnboard = state.matchedLocation == onboardLocation;
 
       // If not Initialized and not going to Initialized redirect to Splash
       if (!isInitialized && !isGoingToInit) {
         return splashLocation;
-      // If not onboard and not going to onboard redirect to OnBoarding
+        // If not onboard and not going to onboard redirect to OnBoarding
       } else if (isInitialized && !isOnboarded && !isGoingToOnboard) {
         return onboardLocation;
-      // If not logedin and not going to login redirect to Login
-      } else if (isInitialized && isOnboarded && !isLogedIn && !isGoingToLogin) {
+        // If not logedin and not going to login redirect to Login
+      } else if (isInitialized &&
+          isOnboarded &&
+          !isLogedIn &&
+          !isGoingToLogin) {
         return loginLocation;
-      // If all the scenarios are cleared but still going to any of that screen redirect to Home
-      } else if ((isLogedIn && isGoingToLogin) || (isInitialized && isGoingToInit) || (isOnboarded && isGoingToOnboard)) {
+        // If all the scenarios are cleared but still going to any of that screen redirect to Home
+      } else if ((isLogedIn && isGoingToLogin) ||
+          (isInitialized && isGoingToInit) ||
+          (isOnboarded && isGoingToOnboard)) {
         return homeLocation;
       } else {
-      // Else Don't do anything
+        // Else Don't do anything
         return null;
       }
     },
