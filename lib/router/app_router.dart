@@ -15,6 +15,7 @@ class AppRouter {
   AppRouter(this.appService);
 
   late final GoRouter _goRouter = GoRouter(
+    // appService is a variable created in initState() in MyAppState. It is a ChangeNotifier and is registered to be listened via refreshListenable. Whenever notifyListeners() is called in appService, this router will get refresh.
     refreshListenable: appService,
     initialLocation: APP_PAGE.home.toPath,
     routes: <GoRoute>[
